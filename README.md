@@ -110,7 +110,7 @@ I do not believe `tempo` is NMAR. If missingness were NMAR, the probability that
 
 Additional data that could help explain this missingness would include information about how Spotify extracted the audio features, whether tempo extraction failed for certain audio files, and whether some genres or track types were harder for Spotify's algorithms to analyze. This could help determine whether the missingness is better explained by observed technical factors.
 
-For the dependence test, I compared tempo missingness against `duration_ms`. My null hypothesis was that tempo missingness does not depend on duration. My alternative hypothesis was that tempo missingness does depend on duration. I used the absolute difference in mean duration between rows with missing tempo and rows with non-missing tempo as my test statistic. The p-value was less than 0.001, so I reject the null hypothesis and conclude that tempo missingness likely depends on duration. This suggests that the missingness is not completely random.
+For the dependence test, I compared tempo missingness against `duration_ms`. My null hypothesis was that tempo missingness does not depend on duration. My alternative hypothesis was that tempo missingness does depend on duration. I used the absolute difference in mean duration between rows with missing tempo and rows with non-missing tempo as my test statistic. The p-value was less than 0.001, so I reject the null hypothesis and conclude that tempo missingness appears to be associated with duration. This suggests that the missingness is not completely random.
 
 For the non-dependence test, I compared tempo missingness against `random_noise`, a randomly generated negative-control column. The p-value was 0.614. Since this p-value is greater than 0.05, I do not reject the null hypothesis, which makes sense because missingness should not depend on random noise.
 
@@ -208,7 +208,7 @@ The final RMSE was **23.49**, compared to the baseline RMSE of **31.48**. Since 
   frameborder="0"
 ></iframe>
 
-This plot compares actual popularity scores to predicted popularity scores. Points closer to the dashed diagonal line are better predictions. The plot shows that the model captures some structure in the data, but there is still error, which is expected because song popularity depends on many factors beyond audio features.
+This plot compares actual popularity scores to predicted popularity scores. Points closer to the dashed diagonal line are better predictions. The plot shows that the model captures some structure in the data, but there is still error, which is expected because song popularity depends on many factors beyond audio features. The model performs better for low- and mid-popularity songs than for the most popular songs, which makes sense because extremely popular songs are likely influenced by outside factors like artist fame, playlists, and marketing.
 
 ## Fairness Analysis
 
