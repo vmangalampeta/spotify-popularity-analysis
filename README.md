@@ -16,6 +16,18 @@ I cleaned the dataset by dropping duplicate rows and filtering to five genres: p
 
 These cleaning steps helped make the dataset easier to analyze and kept the project focused on comparing musically distinct genres.
 
+### Cleaned DataFrame Preview
+
+The table below shows the first few rows of the cleaned dataset used for my analysis.
+
+| popularity | danceability | energy | valence | tempo | track_genre |
+| --- | --- | --- | --- | --- | --- |
+| 54 | 0.608 | 0.638 | 0.439 | 140.109 | classical |
+| 59 | 0.583 | 0.308 | 0.241 | 118.226 | classical |
+| 59 | 0.642 | 0.562 | 0.671 | 149.82 | classical |
+| 2 | 0.496 | 0.186 | 0.585 | 79.334 | classical |
+| 1 | 0.355 | 0.215 | 0.65 | 80.606 | classical |
+
 ### Distribution of Song Popularity
 
 <iframe
@@ -38,25 +50,48 @@ This plot shows the distribution of Spotify popularity scores. Many songs have l
 
 This plot compares danceability and popularity. While the relationship is not perfect, it helps motivate my hypothesis test about whether high-danceability songs tend to have higher average popularity.
 
+### Energy vs. Popularity
+
+<iframe
+  src="assets/energy_vs_popularity.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+This plot compares energy and popularity. Like danceability, energy alone does not perfectly explain popularity, but it is still useful because it captures another important audio quality of a song.
+
 ### Interesting Aggregates
 
 I grouped songs by danceability level and compared their average popularity. This gives a clearer summary of whether low, medium, and high danceability songs differ in popularity.
 
-| Danceability Group | Interpretation |
-|---|---|
-| Low | Songs with lower danceability scores |
-| Medium | Songs with moderate danceability scores |
-| High | Songs with higher danceability scores |
+| danceability_group | popularity |
+| --- | --- |
+| Low | 13.78 |
+| Medium | 25.694 |
+| High | 34.163 |
 
-Overall, the grouped analysis suggested that danceability may be related to popularity, which motivated my later hypothesis test.
+The grouped table suggests that songs with higher danceability tend to have higher average popularity. This motivated my later hypothesis test.
+
+I also grouped songs by genre to compare average popularity and audio features across the five genres.
+
+| track_genre | popularity | danceability | energy | valence |
+| --- | --- | --- | --- | --- |
+| classical | 13.45 | 0.38 | 0.21 | 0.40 |
+| country | 16.76 | 0.56 | 0.62 | 0.53 |
+| hip-hop | 38.13 | 0.74 | 0.69 | 0.56 |
+| pop | 46.87 | 0.63 | 0.62 | 0.52 |
+| rock | 19.38 | 0.54 | 0.69 | 0.55 |
+
+Pop and hip-hop have the highest average popularity among the selected genres, while classical has the lowest. Hip-hop also has the highest average danceability, which connects back to my main question about danceability and popularity.
 
 ## Assessment of Missingness
 
-I focused on the missingness of `tempo`, since it had the largest amount of missingness in the original dataset. I tested whether missingness in `tempo` depended on other observed columns.
+I focused on the missingness of `tempo`, since it had the largest amount of missingness in the original dataset. About 19.4% of the values in `tempo` were missing. I tested whether missingness in `tempo` depended on other observed columns.
 
 For the dependence test, I compared tempo missingness against `duration_ms`. The p-value was less than 0.001, so I reject the null hypothesis and conclude that tempo missingness likely depends on duration. This suggests that the missingness is not completely random.
 
-For the non-dependence test, I compared tempo missingness against `random_noise`, a randomly generated negative-control column. The p-value was 0.616. Since this p-value is greater than 0.05, I do not reject the null hypothesis, which makes sense because missingness should not depend on random noise.
+For the non-dependence test, I compared tempo missingness against `random_noise`, a randomly generated negative-control column. The p-value was 0.614. Since this p-value is greater than 0.05, I do not reject the null hypothesis, which makes sense because missingness should not depend on random noise.
 
 I do not think this missingness is NMAR because the missingness does not seem to depend directly on the unseen tempo value itself. It is more reasonable to treat it as MAR because it appears related to observed columns in the dataset.
 
@@ -122,7 +157,7 @@ Null hypothesis: the model is fair, meaning the RMSE for low-danceability and hi
 
 Alternative hypothesis: the model is worse for low-danceability songs, meaning the RMSE is higher for low-danceability songs.
 
-The test statistic was RMSE for low-danceability songs minus RMSE for high-danceability songs. The observed difference was **-2.14**, and the p-value was **0.934**.
+The test statistic was RMSE for low-danceability songs minus RMSE for high-danceability songs. The observed difference was **-2.14**, and the p-value was **0.936**.
 
 Since the p-value is greater than 0.05, I do not reject the null hypothesis. This means there is not evidence that the model performs worse for low-danceability songs.
 
